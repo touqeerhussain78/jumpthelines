@@ -29,7 +29,7 @@ $pg="";
                                 <a href="notifications.php">
                                     <div class="media border-0 main-notification">
                                         <div class="media-left">
-                                            <img src="images/noti-img.png" alt="">
+                                            <img src="{{asset('images/noti-img.png')}}" alt="">
                                         </div>
                                         <div class="media-body">
                                             <!-- <h6 class="media-heading">You have new notification!</h6> -->
@@ -48,7 +48,7 @@ $pg="";
                                 <a href="notifications.php">
                                     <div class="media border-0 main-notification">
                                         <div class="media-left">
-                                            <img src="images/noti-img.png" alt="">
+                                            <img src="{{asset('images/noti-img.png')}}" alt="">
                                         </div>
                                         <div class="media-body">
                                             <!-- <h6 class="media-heading">You have new notification!</h6> -->
@@ -67,7 +67,7 @@ $pg="";
                                 <a href="notifications.php">
                                     <div class="media border-0 main-notification">
                                         <div class="media-left">
-                                            <img src="images/noti-img.png" alt="">
+                                            <img src="{{asset('images/noti-img.png')}}" alt="">
                                         </div>
                                         <div class="media-body">
                                             <!-- <h6 class="media-heading">You have new notification!</h6> -->
@@ -90,11 +90,12 @@ $pg="";
                     <li class="dropdown dropdown-user nav-item">
                         <a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
                             <span class="avatar avatar-online">
-                                <img src="images/avatar.png" alt="avatar">
+                                <img src="{{asset('images/avatar.png')}}" alt="avatar">
                             </span>
                             <span class="user-name">Hi, {{Auth()->user()->name}}</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="{{route('profile')}}">Profile</a>
                             {{-- <a class="dropdown-item" href="profile.php"><i class="fas fa-user-circle"></i>Profile</a> --}}
                             
                             {{-- <a class="dropdown-item" data-toggle="modal" data-target="#logoutModal"><i class="fas fa-power-off"></i>Logout</a> --}}
@@ -138,32 +139,32 @@ $pg="";
                                     echo "active";
                                 } else {
                                     echo "";
-                                } ?>"><a href="{{route('users')}}"><i class="fas fa-user"></i><span class="menu-title" data-i18n="">Users</span></a></li>
-            {{-- <li class="nav-item <?php if ($pg == "projects") {
+                                } ?>"><a href="{{route('projects')}}"><i class="fas fa-user"></i><span class="menu-title" data-i18n="">Users</span></a></li>
+           <li class="nav-item <?php if ($pg == "projects") {
                                     echo "active";
                                 } else {
                                     echo "";
-                                } ?>"><a href="{{route('projects')}}"><i class="fas fa-file-alt"></i><span class="menu-title" data-i18n="">Projects</span></a></li>
-            <li class="nav-item <?php if ($pg == "payment-logs") {
+                                } ?>"><a href="{{route('projects')}}"><i class="fas fa-file-alt"></i><span class="menu-title" data-i18n="">Projects</span></a></li> 
+              <li class="nav-item <?php if ($pg == "payment-logs") {
                                     echo "active";
                                 } else {
                                     echo "";
-                                } ?>"><a href="{{route('payment_logs')}}"><i class="fas fa-money-bill"></i><span class="menu-title" data-i18n="">Payment Logs</span></a></li>
+                                } ?>"><a href="{{route('payment_logs')}}"><i class="fas fa-money-bill"></i><span class="menu-title" data-i18n="">Payment Logs</span></a></li> 
             <li class="nav-item <?php if ($pg == "consultation-requests") {
                                     echo "active";
                                 } else {
                                     echo "";
                                 } ?>"><a href="{{route('consultation_requests')}}"><i class="fas fa-chalkboard-teacher"></i><span class="menu-title" data-i18n="">Consultation Requests</span></a></li>
-            <li class="nav-item <?php if ($pg == "feedbacks") {
+              <li class="nav-item <?php if ($pg == "feedbacks") {
                                     echo "active";
                                 } else {
                                     echo "";
-                                } ?>"><a href="{{route('feedbacks')}}"><i class="fas fa-comment-alt"></i><span class="menu-title" data-i18n="">Feedbacks</span></a></li> --}}
-            <li class="nav-item <?php if ($pg == "categories") {
+                                } ?>"><a href="{{route('feedbacks')}}"><i class="fas fa-comment-alt"></i><span class="menu-title" data-i18n="">Feedbacks</span></a></li> 
+       <li class="nav-item <?php if ($pg == "categories") {
                                     echo "active";
                                 } else {
                                     echo "";
-                                } ?>"><a href="{{route('categories')}}"><i class="fas fa-list-ul"></i><span class="menu-title" data-i18n="">Categories</span></a></li>
+                                } ?>"><a href="{{route('categories')}}"><i class="fas fa-list-ul"></i><span class="menu-title" data-i18n="">Categories</span></a></li>  
         </ul>
     </div>
 </div>

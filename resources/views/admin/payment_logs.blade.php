@@ -17,7 +17,7 @@
                                 <div class=" circlebox d-flex justify-content-between align-items-center">
                                     <div class="circlebox-content">
                                         <h5>Total Projects</h5>
-                                        <h3 class="total-number">1000</h3>
+                                        <h3 class="total-number">{{$data['project_count']}}</h3>
                                     </div>
                                     <i class="fas fa-user circlebox-icon"></i>
                                 </div>
@@ -26,7 +26,7 @@
                                 <div class=" circlebox d-flex justify-content-between align-items-center">
                                     <div class="circlebox-content">
                                         <h5>Total Completed</h5>
-                                        <h3 class="total-number">300</h3>
+                                        <h3 class="total-number">{{$data['project_count_complete']}}</h3>
                                     </div>
                                     <i class="fas fa-rocket circlebox-icon"></i>
                                 </div>
@@ -35,7 +35,7 @@
                                 <div class=" circlebox d-flex justify-content-between align-items-center">
                                     <div class="circlebox-content">
                                         <h5>Payments Total</h5>
-                                        <h3 class="total-number">$00</h3>
+                                        <h3 class="total-number">${{$data['total_sum']/100}}</h3>
                                     </div>
                                     <i class="fas fa-dollar-sign circlebox-icon"></i>
                                 </div>
@@ -48,21 +48,25 @@
                             <div class="col-12">
                                 <div class="dataTables_wrapper">
                                     <div class="user-listing-top">
-                                        <div class="row align-items-end">
-                                            <div class="col-12 mt-2 sort-datepicker">
-                                                <div class="d-md-flex align-items-center flex-wrap">
-                                                    <label class="mb-2 mb-md-1">Sort by:</label>
-                                                    <div class="input-wrap mr-0 mr-sm-1 mb-2 mb-md-1">
-                                                        <input type="date" placeholder="From" class="form-control general-select profile-input" />
-                                                    </div>
-                                                    <div class="input-wrap mr-0 mr-sm-1 mb-2 mb-md-1">
-                                                        <input type="date" placeholder="To" class="form-control general-select profile-input" />
-                                                    </div>
-                                                    <button class="primary-button px-3 mb-2 mb-md-1">Apply/Clear</button>
+                                        <form action="{{route('payment_filter')}}" method="POST">
+                                        @csrf
+                                    <div class="row align-items-end">
+                                        <div class="col-xl-8 mt-2 sort-datepicker">
+                                            <div class="d-md-flex align-items-center">
+                                                <label class="mb-2 mb-md-1">Sort by:</label>
+                                                <div class="input-wrap mr-0 mr-sm-1 mb-2 mb-md-1">
+                                                    <input type="date" name="start_date" placeholder="From" class="form-control general-select profile-input" />
                                                 </div>
+                                                <div class="input-wrap mr-0 mr-sm-1 mb-2 mb-md-1">
+                                                    <input type="date" name="end_date" placeholder="To" class="form-control general-select profile-input" />
+                                                </div>
+                                                <input type="submit" value="Apply" class="primary-button px-2 px-lg-3 mb-md-1">
+                                                {{-- <button class="primary-button px-2 px-lg-3 mb-md-1">Apply/Clear</button> --}}
                                             </div>
                                         </div>
-                                        <div class="row align-items-end my-xl-2">
+                                    </div>
+                                     </form>
+                                        {{-- <div class="row align-items-end my-xl-2">
                                             <div class="col-12 col-xl-6 mt-2">
                                                 <div class="dataTables_length text-left">
                                                     <label class="d-inline-block m-0">Show</label>
@@ -83,7 +87,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                     <div class="row row-table">
                                         <div class="main-tabble table-responsive">
@@ -102,44 +106,37 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
+                                                                @php
+                                                                    $i=1;
+                                                                @endphp
+                                                                @if(isset($data['payments']))
+                                                                @foreach ($data['payments'] as $item)    
                                                                 <tr>
-                                                                    <td>01</td>
-                                                                    <td>abc</td>
-                                                                    <td>xyz</td>
-                                                                    <td>Title abc</td>
-                                                                    <td>mm/dd/yyyy</td>
-                                                                    <td>$123</td>
+                                                                    <td>{{$i++}}</td>
+                                                                    <td>{{$item->user->first_name}}</td>
+                                                                    <td>{{$item->user->last_name}}</td>
+                                                                    <td>{{$item->project->project_title}}</td>
+                                                                    <td>{{$item->created_at}}</td>
+                                                                    <td>${{$item->amount/100}}</td>
                                                                 </tr>
+                                                                @endforeach
+                                                                @else
+                                                                @foreach ($data['payment_filter'] as $item)    
                                                                 <tr>
-                                                                    <td>02</td>
-                                                                    <td>abc</td>
-                                                                    <td>xyz</td>
-                                                                    <td>Title abc</td>
-                                                                    <td>mm/dd/yyyy</td>
-                                                                    <td>$123</td>
+                                                                    <td>{{$i++}}</td>
+                                                                    <td>{{$item->user->first_name}}</td>
+                                                                    <td>{{$item->user->last_name}}</td>
+                                                                    <td>{{$item->project->project_title}}</td>
+                                                                    <td>{{$item->created_at}}</td>
+                                                                    <td>${{$item->amount/100}}</td>
                                                                 </tr>
-                                                                <tr>
-                                                                    <td>03</td>
-                                                                    <td>abc</td>
-                                                                    <td>xyz</td>
-                                                                    <td>Title abc</td>
-                                                                    <td>mm/dd/yyyy</td>
-                                                                    <td>$123</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>04</td>
-                                                                    <td>abc</td>
-                                                                    <td>xyz</td>
-                                                                    <td>Title abc</td>
-                                                                    <td>mm/dd/yyyy</td>
-                                                                    <td>$123</td>
-                                                                </tr>
-
+                                                                @endforeach
+                                                                @endif
                                                             </tbody>
                                                         </table>
                                                     </div>
                                                 </div>
-                                                <div class="row mb-4 align-items-center">
+                                                {{-- <div class="row mb-4 align-items-center">
                                                     <div class="col-sm-12 col-md-5">
                                                         <div class="showing-result" id="DataTables_Table_0_info">
                                                             Showing 1 to 20 of 52 entries
@@ -166,7 +163,7 @@
                                                             </ul>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> --}}
                                             </div>
                                         </div>
                                     </div>

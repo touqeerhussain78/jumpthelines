@@ -1,13 +1,15 @@
+{{-- <?php
+$pg = 'feedbacks';
+$title = "Feedbacks";
+include('header.php');
+include('sidebar.php');
+?> --}}
+
 
 @extends('layouts.myapp')
 @extends('layouts.sidebar')
 @section('content')
-{{-- <?php
-$pg = 'services';
-$title = "Services";
-include('header.php');
-include('sidebar.php');
-?> --}}
+
 
 <div class="app-content content dashboard">
     <div class="content-wrapper content-wrapper-2">
@@ -23,21 +25,25 @@ include('sidebar.php');
                             <div class="col-12">
                                 <div class="dataTables_wrapper">
                                     <div class="user-listing-top">
-                                        <div class="row align-items-end">
-                                            <div class="col-12 mt-2 sort-datepicker">
-                                                <div class="d-md-flex align-items-center flex-wrap">
-                                                    <label class="mb-2 mb-md-1">Sort by:</label>
-                                                    <div class="input-wrap mr-0 mr-sm-1 mb-2 mb-md-1">
-                                                        <input type="date" placeholder="From" class="form-control general-select profile-input" />
-                                                    </div>
-                                                    <div class="input-wrap mr-0 mr-sm-1 mb-2 mb-md-1">
-                                                        <input type="date" placeholder="To" class="form-control general-select profile-input" />
-                                                    </div>
-                                                    <button class="primary-button px-3 mb-2 mb-md-1">Apply/Clear</button>
+                                        <form action="{{route('feedback_filter')}}" method="POST">
+                                        @csrf
+                                    <div class="row align-items-end">
+                                        <div class="col-xl-8 mt-2 sort-datepicker">
+                                            <div class="d-md-flex align-items-center">
+                                                <label class="mb-2 mb-md-1">Sort by:</label>
+                                                <div class="input-wrap mr-0 mr-sm-1 mb-2 mb-md-1">
+                                                    <input type="date" name="start_date" placeholder="From" class="form-control general-select profile-input" />
                                                 </div>
+                                                <div class="input-wrap mr-0 mr-sm-1 mb-2 mb-md-1">
+                                                    <input type="date" name="end_date" placeholder="To" class="form-control general-select profile-input" />
+                                                </div>
+                                                <input type="submit" value="Apply" class="primary-button px-2 px-lg-3 mb-md-1">
+                                                {{-- <button class="primary-button px-2 px-lg-3 mb-md-1">Apply/Clear</button> --}}
                                             </div>
                                         </div>
-                                        <div class="row align-items-end my-xl-2">
+                                    </div>
+                                     </form>
+                                        {{-- <div class="row align-items-end my-xl-2">
                                             <div class="col-12 col-xl-6 mt-2">
                                                 <div class="dataTables_length text-left">
                                                     <label class="d-inline-block m-0">Show</label>
@@ -58,7 +64,7 @@ include('sidebar.php');
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                     <div class="row row-table">
                                         <div class="main-tabble table-responsive">
@@ -78,96 +84,107 @@ include('sidebar.php');
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                <tr>
-                                                                    <td>01</td>
-                                                                    <td>001</td>
-                                                                    <td>abc</td>
-                                                                    <td>xyz</td>
-                                                                    <td>abc@xyz.com</td>
-                                                                    <td>mm/dd/yyyy</td>
-                                                                    <td>
-                                                                        <div class="btn-group ml-1">
-                                                                            <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
-                                                                                <i class="fa fa-ellipsis-v"></i>
-                                                                            </button>
-                                                                            <div class="dropdown-menu">
-                                                                                <a class="dropdown-item" href="feedback-details.php">
-                                                                                    <i class="far fa-eye"></i>Details</a>
-                                                                                <a class="dropdown-item" data-toggle="modal" data-target="#delete-feedback">
-                                                                                    <i class="far fa-trash"></i>Delete</a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>02</td>
-                                                                    <td>002</td>
-                                                                    <td>abc</td>
-                                                                    <td>xyz</td>
-                                                                    <td>abc@xyz.com</td>
-                                                                    <td>mm/dd/yyyy</td>
-                                                                    <td>
-                                                                        <div class="btn-group ml-1">
-                                                                            <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
-                                                                                <i class="fa fa-ellipsis-v"></i>
-                                                                            </button>
-                                                                            <div class="dropdown-menu">
-                                                                                <a class="dropdown-item" href="feedback-details.php">
-                                                                                    <i class="far fa-eye"></i>Details</a>
-                                                                                <a class="dropdown-item" data-toggle="modal" data-target="#delete-feedback">
-                                                                                    <i class="far fa-trash"></i>Delete</a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>03</td>
-                                                                    <td>003</td>
-                                                                    <td>abc</td>
-                                                                    <td>xyz</td>
-                                                                    <td>abc@xyz.com</td>
-                                                                    <td>mm/dd/yyyy</td>
-                                                                    <td>
-                                                                        <div class="btn-group ml-1">
-                                                                            <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
-                                                                                <i class="fa fa-ellipsis-v"></i>
-                                                                            </button>
-                                                                            <div class="dropdown-menu">
-                                                                                <a class="dropdown-item" href="feedback-details.php">
-                                                                                    <i class="far fa-eye"></i>Details</a>
-                                                                                <a class="dropdown-item" data-toggle="modal" data-target="#delete-feedback">
-                                                                                    <i class="far fa-trash"></i>Delete</a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>04</td>
-                                                                    <td>004</td>
-                                                                    <td>abc</td>
-                                                                    <td>xyz</td>
-                                                                    <td>abc@xyz.com</td>
-                                                                    <td>mm/dd/yyyy</td>
-                                                                    <td>
-                                                                        <div class="btn-group ml-1">
-                                                                            <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
-                                                                                <i class="fa fa-ellipsis-v"></i>
-                                                                            </button>
-                                                                            <div class="dropdown-menu">
-                                                                                <a class="dropdown-item" href="feedback-details.php">
-                                                                                    <i class="far fa-eye"></i>Details</a>
-                                                                                <a class="dropdown-item" data-toggle="modal" data-target="#delete-feedback">
-                                                                                    <i class="far fa-trash"></i>Delete</a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
+                                                                @php
+                                                                    $i=1;
+                                                                @endphp
 
+                                                                @if(isset($feedbacks))
+                                                                @foreach($feedbacks as $item)
+                                                                <tr>
+                                                                    <td>{{$i++}}</td>
+                                                                    <td>{{$item->id}}</td>
+                                                                    <td>{{$item->first_name}}</td>
+                                                                    <td>{{$item->last_name}}</td>
+                                                                    <td>{{$item->email}}</td>
+                                                                    <td>{{$item->created_at}}</td>
+                                                                    <td>
+                                                                        <div class="btn-group ml-1">
+                                                                            <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+                                                                                <i class="fa fa-ellipsis-v"></i>
+                                                                            </button>
+                                                                            <div class="dropdown-menu">
+                                                                                <a class="dropdown-item" href="{{route('feedback_detail',['id'=>$item->id])}}">
+                                                                                    <i class="far fa-eye"></i>Details</a>
+                                                                                    <a class="dropdown-item" data-toggle="modal" data-target="#delete-feedback_{{$item->id}}">
+                                                                                    <i class="far fa-trash"></i>Delete</a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                    <!-- Delete Service Modal -->
+                                                                    <div class="modal fade" id="delete-feedback_{{$item->id}}" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                                                            <div class="modal-content site-modal">
+                                                                                <i class="fas fa-times close modal-close" data-dismiss="modal" aria-label="Close"></i>
+                                                                                <div class="text-center">
+                                                                                    <img src="images/question-mark.png" alt="">
+                                                                                    <p class="modal-text">Are you sure you want to delete this service</p>
+                                                                                    <div class="modal-btn-div">
+                                                                                        <form action="{{route('feedback_delete',['id'=>$item->id])}}" method="POST" >
+                                                                                            @csrf
+                                                                                            <input type="submit" class="primary-button d-inline-block px-3 mx-1 mt-1" value="Yes">
+                                                                                        {{-- <a class="general-btn btn-accept d-inline-block px-3 mx-1 mt-1" data-dismiss="modal" aria-label="Close" data-toggle="modal" data-target="#confirm-delete-service">Yes</a> --}}
+                                                                                        </form>
+                                                                                        <a class="general-btn btn-reject d-inline-block px-3 mx-1 mt-1" data-dismiss="modal" aria-label="Close">No</a>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- Delete Service Modal -->
+                                                                @endforeach
+                                                                @else
+                                                                @foreach($feedback_filter as $item)
+                                                                <tr>
+                                                                    <td>{{$i++}}</td>
+                                                                    <td>{{$item->id}}</td>
+                                                                    <td>{{$item->first_name}}</td>
+                                                                    <td>{{$item->last_name}}</td>
+                                                                    <td>{{$item->email}}</td>
+                                                                    <td>{{$item->created_at}}</td>
+                                                                    <td>
+                                                                        <div class="btn-group ml-1">
+                                                                            <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+                                                                                <i class="fa fa-ellipsis-v"></i>
+                                                                            </button>
+                                                                            <div class="dropdown-menu">
+                                                                                <a class="dropdown-item" href="{{route('feedback_detail',['id'=>$item->id])}}">
+                                                                                    <i class="far fa-eye"></i>Details</a>
+                                                                                    <a class="dropdown-item" data-toggle="modal" data-target="#delete-feedback_{{$item->id}}">
+                                                                                    <i class="far fa-trash"></i>Delete</a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                    <!-- Delete Service Modal -->
+                                                                    <div class="modal fade" id="delete-feedback_{{$item->id}}" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                                                            <div class="modal-content site-modal">
+                                                                                <i class="fas fa-times close modal-close" data-dismiss="modal" aria-label="Close"></i>
+                                                                                <div class="text-center">
+                                                                                    <img src="images/question-mark.png" alt="">
+                                                                                    <p class="modal-text">Are you sure you want to delete this service</p>
+                                                                                    <div class="modal-btn-div">
+                                                                                        <form action="{{route('feedback_delete',['id'=>$item->id])}}" method="POST" >
+                                                                                            @csrf
+                                                                                            <input type="submit" class="primary-button d-inline-block px-3 mx-1 mt-1" value="Yes">
+                                                                                        {{-- <a class="general-btn btn-accept d-inline-block px-3 mx-1 mt-1" data-dismiss="modal" aria-label="Close" data-toggle="modal" data-target="#confirm-delete-service">Yes</a> --}}
+                                                                                        </form>
+                                                                                        <a class="general-btn btn-reject d-inline-block px-3 mx-1 mt-1" data-dismiss="modal" aria-label="Close">No</a>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- Delete Service Modal -->
+                                                                @endforeach
+                                                                @endif
+                                                                
                                                             </tbody>
                                                         </table>
                                                     </div>
                                                 </div>
-                                                <div class="row mb-4 align-items-center">
+                                                {{-- <div class="row mb-4 align-items-center">
                                                     <div class="col-sm-12 col-md-5">
                                                         <div class="showing-result" id="DataTables_Table_0_info">
                                                             Showing 1 to 20 of 52 entries
@@ -194,7 +211,7 @@ include('sidebar.php');
                                                             </ul>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> --}}
                                             </div>
                                         </div>
                                     </div>
@@ -210,8 +227,4 @@ include('sidebar.php');
     </div>
 </div>
 
-
-{{-- <?php include('footer.php') ?> --}}
-
-@endsection
 {{-- <?php include('footer.php') ?> --}}

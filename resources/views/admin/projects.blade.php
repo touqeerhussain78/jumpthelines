@@ -1,13 +1,13 @@
+{{-- <?php
+$pg = 'projects';
+$title = "Projects";
+include('header.php');
+include('sidebar.php');
+?> --}}
 
 @extends('layouts.myapp')
 @extends('layouts.sidebar')
 @section('content')
-{{-- <?php
-$pg = 'services';
-$title = "Services";
-include('header.php');
-include('sidebar.php');
-?> --}}
 
 <div class="app-content content dashboard">
     <div class="content-wrapper content-wrapper-2">
@@ -24,7 +24,7 @@ include('sidebar.php');
                                 <div class=" circlebox d-flex justify-content-between align-items-center">
                                     <div class="circlebox-content">
                                         <h5>Total Projects</h5>
-                                        <h3 class="total-number">1000</h3>
+                                        <h3 class="total-number">{{$data['project_count']}}</h3>
                                     </div>
                                     <i class="fas fa-user circlebox-icon"></i>
                                 </div>
@@ -33,7 +33,7 @@ include('sidebar.php');
                                 <div class=" circlebox d-flex justify-content-between align-items-center">
                                     <div class="circlebox-content">
                                         <h5>Total In Progress</h5>
-                                        <h3 class="total-number">300</h3>
+                                        <h3 class="total-number">{{$data['project_progress_count']}}</h3>
                                     </div>
                                     <i class="fas fa-rocket circlebox-icon"></i>
                                 </div>
@@ -42,7 +42,7 @@ include('sidebar.php');
                                 <div class=" circlebox d-flex justify-content-between align-items-center">
                                     <div class="circlebox-content">
                                         <h5>Total Payments</h5>
-                                        <h3 class="total-number">$00</h3>
+                                        <h3 class="total-number">${{$data['total_amount']/100}}</h3>
                                     </div>
                                     <i class="fas fa-dollar-sign circlebox-icon"></i>
                                 </div>
@@ -57,27 +57,30 @@ include('sidebar.php');
                                     <div class="user-listing-top">
                                         <div class="row align-items-end">
                                             <div class="col-xl-8 mt-2 sort-datepicker">
+                                                <form action="{{route('project_filter')}}" method="POST">
+                                         @csrf
                                                 <div class="d-lg-flex align-items-center">
                                                     <label class="m-0">Sort by:</label>
                                                     <div class="input-wrap mr-0 mr-sm-1 mb-2 mb-lg-0">
-                                                        <input type="date" placeholder="From" class="form-control general-select profile-input" />
+                                                        <input type="date"  name="start_date" placeholder="From" class="form-control general-select profile-input" />
                                                     </div>
                                                     <div class="input-wrap mr-0 mr-sm-1 mb-2 mb-lg-0">
-                                                        <input type="date" placeholder="To" class="form-control general-select profile-input" />
+                                                        <input type="date"  name="end_date" placeholder="To" class="form-control general-select profile-input" />
                                                     </div>
-                                                    <button class="primary-button px-2 px-lg-3 mb-lg-0">Apply/Clear</button>
+                                                    <button class="primary-button px-2 px-lg-3 mb-md-0">Apply/Clear</button>
                                                 </div>
+                                                </form>
                                             </div>
-                                            <div class="col-xl-4 mt-2 text-left text-xl-right">
+                                            {{-- <div class="col-xl-4 mt-2 text-left text-xl-right">
                                                 <label class="m-0">Filter by Status:</label>
                                                 <select name="" id="" class="general-select profile-input w-50">
                                                     <option value="" disabled selected hidden>Select</option>
                                                     <option value="">Completed</option>
                                                     <option value="">In-Progress</option>
                                                 </select>
-                                            </div>
+                                            </div> --}}
                                         </div>
-                                        <div class="row align-items-end my-xl-2">
+                                        {{-- <div class="row align-items-end my-xl-2">
                                             <div class="col-12 col-xl-6 mt-2">
                                                 <div class="dataTables_length text-left">
                                                     <label class="d-inline-block m-0">Show</label>
@@ -98,7 +101,7 @@ include('sidebar.php');
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                     <div class="row row-table">
                                         <div class="main-tabble table-responsive">
@@ -120,102 +123,81 @@ include('sidebar.php');
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
+                                                                @php
+                                                                    $i=1;
+                                                                @endphp
+                                                                @if(isset($projects))
+                                                                @foreach($projects as $item)
                                                                 <tr>
-                                                                    <td>01</td>
-                                                                    <td>Title abc</td>
-                                                                    <td>mm/dd/yyyy</td>
-                                                                    <td>Category abc</td>
-                                                                    <td>Title abc</td>
-                                                                    <td>00 Weeks</td>
-                                                                    <td>$123</td>
-                                                                    <td><span class="inprogress-td">In Progress</span></td>
+                                                                    <td>{{$i++}}</td>
+                                                                    <td>{{$item->service->title}}</td>
+                                                                    <td>{{$item->created_at}}</td>
+                                                                    <td>{{$item->service->category->title}}</td>
+                                                                    <td>{{$item->project_title}}</td>
+                                                                    <td>{{$item->completion_date}}</td>
+                                                                    <td>${{$item->consultation_charges}}</td>
+                                                                    <td><span class="inprogress-td">{{$item->status}}</span></td>
                                                                     <td>
                                                                         <div class="btn-group ml-1">
                                                                             <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
                                                                                 <i class="fa fa-ellipsis-v"></i>
                                                                             </button>
                                                                             <div class="dropdown-menu">
-                                                                                <a class="dropdown-item" href="project-details-2.php">
+                                                                                @if($item->status=='Completed')
+                                                                                <a class="dropdown-item" href="{{route('project_detail_complete',['id' => $item->id])}}" >
                                                                                     <i class="far fa-eye"></i>Details</a>
-                                                                                <a class="dropdown-item">
+                                                                                @else
+                                                                                <a class="dropdown-item" href="{{route('project_detail_process',['id' => $item->id])}}" >
+                                                                                    <i class="far fa-eye"></i>Details</a>
+                                                                                @endif
+                                                                                @if($item->status=='Progress')
+                                                                                <a class="dropdown-item" onclick="complete_me({{$item->id}})">
                                                                                     <i class="far fa-check"></i>Completed</a>
+                                                                                @endif
                                                                             </div>
                                                                         </div>
                                                                     </td>
                                                                 </tr>
+                                                                @endforeach
+                                                                @else
+                                                                @foreach($project_filter as $item)
                                                                 <tr>
-                                                                    <td>02</td>
-                                                                    <td>Title abc</td>
-                                                                    <td>mm/dd/yyyy</td>
-                                                                    <td>Category abc</td>
-                                                                    <td>Title abc</td>
-                                                                    <td>00 Weeks</td>
-                                                                    <td>$123</td>
-                                                                    <td><span class="inprogress-td">In Progress</span></td>
+                                                                    <td>{{$i++}}</td>
+                                                                    <td>{{$item->service->title}}</td>
+                                                                    <td>{{$item->created_at}}</td>
+                                                                    <td>{{$item->service->category->title}}</td>
+                                                                    <td>{{$item->project_title}}</td>
+                                                                    <td>{{$item->completion_date}}</td>
+                                                                    <td>${{$item->consultation_charges}}</td>
+                                                                    <td><span class="inprogress-td">{{$item->status}}</span></td>
                                                                     <td>
                                                                         <div class="btn-group ml-1">
                                                                             <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
                                                                                 <i class="fa fa-ellipsis-v"></i>
                                                                             </button>
                                                                             <div class="dropdown-menu">
-                                                                                <a class="dropdown-item" href="project-details-2.php">
+                                                                                @if($item->status=='Completed')
+                                                                                <a class="dropdown-item" href="{{route('project_detail_complete',['id' => $item->id])}}" >
                                                                                     <i class="far fa-eye"></i>Details</a>
-                                                                                <a class="dropdown-item">
+                                                                                @else
+                                                                                <a class="dropdown-item" href="{{route('project_detail_process',['id' => $item->id])}}" >
+                                                                                    <i class="far fa-eye"></i>Details</a>
+                                                                                @endif
+                                                                                @if($item->status=='Progress')
+                                                                                <a class="dropdown-item" onclick="complete_me({{$item->id}})">
                                                                                     <i class="far fa-check"></i>Completed</a>
+                                                                                @endif
                                                                             </div>
                                                                         </div>
                                                                     </td>
                                                                 </tr>
-                                                                <tr>
-                                                                    <td>03</td>
-                                                                    <td>Title abc</td>
-                                                                    <td>mm/dd/yyyy</td>
-                                                                    <td>Category abc</td>
-                                                                    <td>Title abc</td>
-                                                                    <td>00 Weeks</td>
-                                                                    <td>$123</td>
-                                                                    <td><span class="active-td">Completed</span></td>
-                                                                    <td>
-                                                                        <div class="btn-group ml-1">
-                                                                            <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
-                                                                                <i class="fa fa-ellipsis-v"></i>
-                                                                            </button>
-                                                                            <div class="dropdown-menu">
-                                                                                <a class="dropdown-item" href="project-details.php">
-                                                                                    <i class="far fa-eye"></i>Details</a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>04</td>
-                                                                    <td>Title abc</td>
-                                                                    <td>mm/dd/yyyy</td>
-                                                                    <td>Category abc</td>
-                                                                    <td>Title abc</td>
-                                                                    <td>00 Weeks</td>
-                                                                    <td>$123</td>
-                                                                    <td><span class="active-td">Completed</span></td>
-                                                                    <td>
-                                                                        <div class="btn-group ml-1">
-                                                                            <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
-                                                                                <i class="fa fa-ellipsis-v"></i>
-                                                                            </button>
-                                                                            <div class="dropdown-menu">
-                                                                                <a class="dropdown-item" href="project-details.php">
-                                                                                    <i class="far fa-eye"></i>Details</a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-
-
-
+                                                                @endforeach
+                                                                @endif
                                                             </tbody>
                                                         </table>
                                                     </div>
                                                 </div>
-                                                <div class="row mb-4 align-items-center">
+                                                {{-- <div class="row mb-4 align-items-center">
                                                     <div class="col-sm-12 col-md-5">
                                                         <div class="showing-result" id="DataTables_Table_0_info">
                                                             Showing 1 to 20 of 52 entries
@@ -242,7 +224,7 @@ include('sidebar.php');
                                                             </ul>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> --}}
                                             </div>
                                         </div>
                                     </div>
@@ -258,8 +240,31 @@ include('sidebar.php');
     </div>
 </div>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
 
-{{-- <?php include('footer.php') ?> --}}
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    function complete_me(id){
+            $.ajax({
+        url: "{{route('project_status_change')}}",
+        type: "POST",
+        data:{ 
+            _token:'{{ csrf_token() }}',
+                id:id,
+                status:'Completed'
+        },
+        dataType: 'json',
+        }).done(function( response ) {
+            location.reload();
+        });
+    }
 
+
+
+</script>
 @endsection
 {{-- <?php include('footer.php') ?> --}}
