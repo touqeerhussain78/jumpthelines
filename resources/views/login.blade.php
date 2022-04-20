@@ -28,6 +28,7 @@
                             <input type="password" name="password" class="w-100 pass-field enter-input" id="exampleInputPassword1" placeholder="Enter Password*">
                             <i class="far fa-eye-slash enter-icon right-icon" aria-hidden="true"></i>
                         </div>
+                        <input type="hidden" name="is_admin" value="1">
                         <div class="form-group form-check text-right w-90 mb-3">
                             <a href="{{route('password_recovery')}}" class="decorated-link-aqua">Forgot Password?</a>
                         </div>

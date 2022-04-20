@@ -32,9 +32,11 @@ class LoginController extends Controller
         ]);
 
         $credentials = $request->only('email', 'password');
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials) AND $request->is_admin == '1' ) {
             return redirect()->intended('dashboard')
             ->withSuccess('You have Successfully loggedin');
+        }else if(Auth::attempt($credentials) and $request->is_admin == '0'){
+            return redirect()->route('home')->withSuccess('You have Successfully loggedin');
         }
         return redirect()->back()->with('success', 'Opps! You have entered invalid credentials');
     }
@@ -56,5 +58,13 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+  
+    public function logout()
+    {
+        Auth::logout();
+
+        return redirect()->route('home');
     }
 }

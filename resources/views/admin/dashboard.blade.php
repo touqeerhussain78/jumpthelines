@@ -9,6 +9,12 @@ include('sidebar.php');
 @extends('layouts.sidebar')
 @section('content')
 
+<style>
+    #mychart{
+  width: 350px;
+  height: 200px;
+}
+</style>
 <div class="app-content content dashboard">
   <div class="content-wrapper content-wrapper-2">
     <div class="content-body">
@@ -25,7 +31,7 @@ include('sidebar.php');
                 <div class=" circlebox d-flex justify-content-between align-items-center">
                   <div class="circlebox-content">
                     <h5>Total Users</h5>
-                    <h3 class="total-number">1000</h3>
+                    <h3 class="total-number">{{$data['users']}}</h3>
                   </div>
                   <i class="fas fa-user circlebox-icon"></i>
                 </div>
@@ -34,7 +40,7 @@ include('sidebar.php');
                 <div class=" circlebox d-flex justify-content-between align-items-center">
                   <div class="circlebox-content">
                     <h5>Total Projects</h5>
-                    <h3 class="total-number">300</h3>
+                    <h3 class="total-number">{{$data['project_count']}}</h3>
                   </div>
                   <i class="fas fa-rocket circlebox-icon"></i>
                 </div>
@@ -43,7 +49,7 @@ include('sidebar.php');
                 <div class=" circlebox d-flex justify-content-between align-items-center">
                   <div class="circlebox-content">
                     <h5>Total Amount</h5>
-                    <h3 class="total-number">$00</h3>
+                    <h3 class="total-number">${{$data['payment']/100}}</h3>
                   </div>
                   <i class="fas fa-dollar-sign circlebox-icon"></i>
                 </div>
@@ -55,16 +61,17 @@ include('sidebar.php');
               <div class="col-12">
                 <div class="row">
                   <div class="col-xl-6">
-                    <h2 class="sub-heading">Revenue Generated Per Month</h2>
+                    <h2 class="sub-heading">Revenue Generated Per Year</h2>
                   </div>
                   <div class="col-xl-6 text-right mt-xl-0 mt-2">
-                    <select name="" id="" class="general-select profile-input">
-                      <option value="" selected hidden disabled>Select Year</option>
-                      <option value="">2012</option>
-                      <option value="">2012</option>
-                      <option value="">2012</option>
-                      <option value="">2012</option>
-                      <option value="">2012</option>
+                    <select name="year" id="selectYear">
+                        <option value="">Select year</option>
+                        <option value="2022">2022</option>
+                        <option value="2021">2021</option>
+                        <option value="2020">2020</option>
+                        <option value="2019">2019</option>
+                        <option value="2018">2018</option>
+                        <option value="2017">2017</option>
                     </select>
                   </div>
                 </div>
@@ -73,7 +80,21 @@ include('sidebar.php');
                     <h3 class="no-of-user left-rotate">Revenue</h3>
                   </div>
                   <div class="col-xl-11">
-                    <img src="images/revenue-chart2.png" alt="" class="img-fluid w-100">
+                    <div class="box">
+                    <div class="chart-main position-relative">
+                        <div class="row">
+                            <div class="col-12">
+                                
+                                 <div class="chart-container">
+                                    <div class="pie-chart-container">
+                                    <canvas id="pie-chart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    {{-- <img src="images/revenue-chart2.png" alt="" class="img-fluid w-100"> --}}
                   </div>
                   <div class="col-12 text-center">
                     <h3 class="no-of-user">Months</h3>
@@ -103,16 +124,16 @@ include('sidebar.php');
                           <button class="primary-button px-2 mb-md-0">Apply/Clear</button>
                         </div>
                       </div>
-                      <div class="col-xl-4 mt-2 text-left text-xl-right">
+                      {{-- <div class="col-xl-4 mt-2 text-left text-xl-right">
                         <label class="m-0">Filter by Status:</label>
                         <select name="" id="" class="general-select profile-input w-50">
                           <option value="" disabled selected hidden>Select</option>
                           <option value="">Completed</option>
                           <option value="">In-Progress</option>
                         </select>
-                      </div>
+                      </div> --}}
                     </div>
-                    <div class="row align-items-end my-xl-2">
+                    {{-- <div class="row align-items-end my-xl-2">
                       <div class="col-12 col-xl-6 mt-2">
                         <div class="dataTables_length text-left">
                           <label class="d-inline-block m-0">Show</label>
@@ -133,7 +154,7 @@ include('sidebar.php');
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </div> --}}
                   </div>
                   <div class="row row-table">
                     <div class="main-tabble table-responsive">
@@ -155,127 +176,47 @@ include('sidebar.php');
                                 </tr>
                               </thead>
                               <tbody>
+                                @php
+                                  $i=1;
+                                @endphp
+                                @foreach ($data['projects'] as $item)
                                 <tr>
-                                  <td>01</td>
-                                  <td>Title abc</td>
-                                  <td>mm/dd/yyyy</td>
-                                  <td>Category abc</td>
-                                  <td>Title abc</td>
-                                  <td>00 Weeks</td>
-                                  <td>$123</td>
-                                  <td><span class="inprogress-td">In-Progress</span></td>
+                                  <td>{{$i++}}</td>
+                                  <td>{{$item->service->title}}</td>
+                                  <td>{{$item->created_at}}</td>
+                                  <td>{{$item->service->category->title}}</td>
+                                  <td>{{$item->project_title}}</td>
+                                  <td>{{$item->weeks}}</td>
+                                  <td>${{$item->consultation_charges}}</td>
+                                  <td><span class="inprogress-td">{{$item->status}}</span></td>
                                   <td>
                                     <div class="btn-group ml-1">
                                       <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
                                         <i class="fa fa-ellipsis-v"></i>
                                       </button>
                                       <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="">
-                                          <i class="far fa-eye"></i>Details</a>
-                                        <a class="dropdown-item" href="">
-                                          <i class="far fa-check"></i>Complete</a>
+                                          @if($item->status=='Completed')
+                                          <a class="dropdown-item" href="{{route('project_detail_complete',['id' => $item->id])}}" >
+                                              <i class="far fa-eye"></i>Details</a>
+                                          @else
+                                          <a class="dropdown-item" href="{{route('project_detail_process',['id' => $item->id])}}" >
+                                              <i class="far fa-eye"></i>Details</a>
+                                          @endif
+                                          @if($item->status=='Progress')
+                                          <a class="dropdown-item" onclick="complete_me({{$item->id}})">
+                                              <i class="far fa-check"></i>Completed</a>
+                                          @endif
                                       </div>
                                     </div>
                                   </td>
                                 </tr>
-                                <tr>
-                                  <td>02</td>
-                                  <td>Title abc</td>
-                                  <td>mm/dd/yyyy</td>
-                                  <td>Category abc</td>
-                                  <td>Title abc</td>
-                                  <td>00 Weeks</td>
-                                  <td>$123</td>
-                                  <td><span class="inprogress-td">In-Progress</span></td>
-                                  <td>
-                                    <div class="btn-group ml-1">
-                                      <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
-                                        <i class="fa fa-ellipsis-v"></i>
-                                      </button>
-                                      <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="">
-                                          <i class="far fa-eye"></i>Details</a>
-                                        <a class="dropdown-item" href="">
-                                          <i class="far fa-check"></i>Complete</a>
-                                      </div>
-                                    </div>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>03</td>
-                                  <td>Title abc</td>
-                                  <td>mm/dd/yyyy</td>
-                                  <td>Category abc</td>
-                                  <td>Title abc</td>
-                                  <td>00 Weeks</td>
-                                  <td>$123</td>
-                                  <td><span class="active-td">Completed</span></td>
-                                  <td>
-                                    <div class="btn-group ml-1">
-                                      <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
-                                        <i class="fa fa-ellipsis-v"></i>
-                                      </button>
-                                      <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="">
-                                          <i class="far fa-eye"></i>Details</a>
-                                        <a class="dropdown-item" href="">
-                                          <i class="far fa-check"></i>Complete</a>
-                                      </div>
-                                    </div>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>04</td>
-                                  <td>Title abc</td>
-                                  <td>mm/dd/yyyy</td>
-                                  <td>Category abc</td>
-                                  <td>Title abc</td>
-                                  <td>00 Weeks</td>
-                                  <td>$123</td>
-                                  <td><span class="active-td">Completed</span></td>
-                                  <td>
-                                    <div class="btn-group ml-1">
-                                      <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
-                                        <i class="fa fa-ellipsis-v"></i>
-                                      </button>
-                                      <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="">
-                                          <i class="far fa-eye"></i>Details</a>
-                                        <a class="dropdown-item" href="">
-                                          <i class="far fa-check"></i>Complete</a>
-                                      </div>
-                                    </div>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>05</td>
-                                  <td>Title abc</td>
-                                  <td>mm/dd/yyyy</td>
-                                  <td>Category abc</td>
-                                  <td>Title abc</td>
-                                  <td>00 Weeks</td>
-                                  <td>$123</td>
-                                  <td><span class="inprogress-td">In-Progress</span></td>
-                                  <td>
-                                    <div class="btn-group ml-1">
-                                      <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
-                                        <i class="fa fa-ellipsis-v"></i>
-                                      </button>
-                                      <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="">
-                                          <i class="far fa-eye"></i>Details</a>
-                                        <a class="dropdown-item" href="">
-                                          <i class="far fa-check"></i>Complete</a>
-                                      </div>
-                                    </div>
-                                  </td>
-                                </tr>
+                                @endforeach
 
                               </tbody>
                             </table>
                           </div>
                         </div>
-                        <div class="row mb-4 align-items-center">
+                        {{-- <div class="row mb-4 align-items-center">
                           <div class="col-sm-12 col-md-5">
                             <div class="showing-result" id="DataTables_Table_0_info">
                               Showing 1 to 20 of 52 entries
@@ -302,7 +243,7 @@ include('sidebar.php');
                               </ul>
                             </div>
                           </div>
-                        </div>
+                        </div> --}}
                       </div>
                     </div>
                   </div>
@@ -317,7 +258,188 @@ include('sidebar.php');
     </div>
   </div>
 </div>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> 
+<script>
 
 
+
+      $( document ).ready(function() {
+            $('#selectYear').change();
+      });
+
+      $.ajaxSetup({
+          headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+      });
+
+      $('#selectYear').on('change', function() {
+            
+            var year = this.value;
+
+            var url = "{{ route('get-chart', ":id") }}";
+            url = url.replace(':id', year);
+            // var url:"{{ route('get-chart',":year") }}",
+            // url = url.replace(':id', id);
+            $.ajax({
+                type:'GET',
+                // url:"{{ route('get-chart',":year") }}",
+                // data:{ year:year },
+                url: url,
+                success:function(data){
+                    console.log(data)
+                    // var bars_basic_element = document.getElementById('bars_basic');
+                    var cData = data;
+                    // console.log(cData.chart_data.label);
+
+                    var ctx = $("#pie-chart");
+
+                        //pie chart data
+                    var data = {
+                        labels: cData.chart_data.label,
+                        datasets: [
+                        {
+                            label: "Revenue",
+                            data: cData.chart_data.data,
+                            backgroundColor: [
+                            "#DEB887",
+                            "#A9A9A9",
+                            "#DC143C",
+                            "#F4A460",
+                            "#2E8B57",
+                            "#1D7A46",
+                            "#CDA776",
+                            ],
+                            borderColor: [
+                            "#CDA776",
+                            "#989898",
+                            "#CB252B",
+                            "#E39371",
+                            "#1D7A46",
+                            "#F4A460",
+                            "#CDA776",
+                            ],
+                            borderWidth: [1, 1, 1, 1, 1,1,1]
+                        }
+                        ]
+                    };
+                
+                    //options   
+                    var options = {
+                        responsive: true,
+                        title: {
+                        display: true,
+                        position: "top",
+                        text: "This Year Payment ",
+                        fontSize: 18,
+                        fontColor: "#111"
+                        },
+                        legend: {
+                        display: true,
+                        position: "bottom",
+                        labels: {
+                            fontColor: "#333",
+                            fontSize: 16
+                        }
+                        }
+                    };
+                
+                    //create Pie Chart class object
+                    var chart1 = new Chart(ctx, {
+                        type: "bar",
+                        data: data,
+                        options: options
+                    });
+                }
+            });
+
+        });
+
+  $(function(){
+      //get the pie chart canvas
+      var cData = JSON.parse(`<?php echo $data['chart_data']; ?>`);
+      var ctx = $("#pie-chart");
+
+      //pie chart data
+      var data = {
+        labels:'',
+        datasets: [
+          {
+            label: "Revenue",
+            data: cData.data,
+            backgroundColor: [
+              "#DEB887",
+              "#A9A9A9",
+              "#DC143C",
+              "#F4A460",
+              "#2E8B57",
+              "#1D7A46",
+              "#CDA776",
+            ],
+            borderColor: [
+              "#CDA776",
+              "#989898",
+              "#CB252B",
+              "#E39371",
+              "#1D7A46",
+              "#F4A460",
+              "#CDA776",
+            ],
+            borderWidth: [1, 1, 1, 1, 1,1,1]
+          }
+        ]
+      };
+ 
+      //options
+      var options = {
+        responsive: true,
+        title: {
+          display: true,
+          position: "top",
+          text: "This Year Payment ",
+          fontSize: 18,
+          fontColor: "#111"
+        },
+        legend: {
+          display: true,
+          position: "bottom",
+          labels: {
+            fontColor: "#333",
+            fontSize: 16
+          }
+        }
+      };
+ 
+      //create Pie Chart class object
+      var chart1 = new Chart(ctx, {
+        type: "bar",
+        data: data,
+        options: options,
+        
+      });
+ 
+  });
+
+
+    function complete_me(id){
+            $.ajax({
+        url: "{{route('project_status_change')}}",
+        type: "POST",
+        data:{ 
+            _token:'{{ csrf_token() }}',
+                id:id,
+                status:'Completed'
+        },
+        dataType: 'json',
+        }).done(function( response ) {
+            location.reload();
+        });
+    }
+
+
+
+</script>
 @endsection
 {{-- <?php include('footer.php') ?> --}}

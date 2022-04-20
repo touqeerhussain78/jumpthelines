@@ -35,7 +35,7 @@
                                         </div>
                                     </div>
                                      </form>
-                                    <div class="row align-items-end my-xl-2">
+                                    {{-- <div class="row align-items-end my-xl-2">
                                         <div class="col-12 col-xl-6 mt-2">
                                             <div class="dataTables_length text-left">
                                                 <label class="d-inline-block m-0">Show</label>
@@ -56,8 +56,11 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                 </div>
+                            @if(session('success'))
+                                <span style="color:red">{{session('success')}}</span>
+                            @endif
                                 <div class="row row-table">
                                     <div class="main-tabble table-responsive">
                                         <div class="dataTables_wrapper container-fluid dt-bootstrap4">
