@@ -210,7 +210,7 @@ class MyController extends Controller
 
     public function categories()
     {
-        $category  = Category::paginate(2);
+        $category  = Category::get();
         return view('admin.categories', compact('category', $category));
     }
 

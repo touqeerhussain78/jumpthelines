@@ -1,0 +1,31 @@
+<IfModule mod_rewrite.c>
+
+   <IfModule mod_negotiation.c>
+   </IfModule>
+
+   RewriteEngine On
+
+   Header set Access-Control-Allow-Origin "*"
+   Header set X-Frame-Options "allow-from *"
+   
+   RewriteCond %{HTTP:Authorization} ^(.+)$ 
+   RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+
+   # Static resources if they exist
+   # RewriteCond %{DOCUMENT_ROOT}/public/$1 -f
+   # RewriteRule (.+) public/$1 [L]
+
+   RewriteCond %{REQUEST_FILENAME} -d [OR]
+   RewriteCond %{REQUEST_FILENAME} -f
+   RewriteRule ^ ^$1 [N]
+
+   RewriteCond %{REQUEST_URI} (\.\w+$) [NC]
+   RewriteRule ^(.*)$ public/$1 
+
+   RewriteCond %{REQUEST_FILENAME} !-d
+   RewriteCond %{REQUEST_FILENAME} !-f
+   RewriteRule ^ server.php
+
+</IfModule>
+

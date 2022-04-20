@@ -85,7 +85,9 @@
                                                                 <td>{{$i++}}</td>
                                                                 <td>{{$item->title}}</td>
                                                                 <td>{{date('d-m-Y',strtotime($item->created_at))}}</td>
+                                                                @if(isset($item->category))
                                                                 <td>{{$item->category->title}}</td>
+                                                                @endif
                                                                 {{-- <td>00</td> --}}
                                                                 <td>
                                                                     <div class="btn-group ml-1">
@@ -130,7 +132,9 @@
                                                                 <td>{{$i++}}</td>
                                                                 <td>{{$item->title}}</td>
                                                                 <td>{{date('d-m-Y',strtotime($item->created_at))}}</td>
+                                                                @if(isset($item->category))
                                                                 <td>{{$item->category->title}}</td>
+                                                                @endif
                                                                 {{-- <td>00</td> --}}
                                                                 <td>
                                                                     <div class="btn-group ml-1">
